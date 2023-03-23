@@ -68,7 +68,7 @@ def main(predict_config: OmegaConf):
             cur_out_fname = os.path.join(
                 predict_config.outdir, 
                 os.path.splitext(mask_fname[len(predict_config.indir):])[0] + out_ext
-            )
+            ).replace("mask/", '')
             os.makedirs(os.path.dirname(cur_out_fname), exist_ok=True)
             batch = default_collate([dataset[img_i]])
             if predict_config.get('refine', False):
