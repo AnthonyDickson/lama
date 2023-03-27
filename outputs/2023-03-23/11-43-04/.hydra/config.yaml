@@ -1,0 +1,20 @@
+indir: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/52ccf55316641164c5560b2a3c5a795712c827725a9e4f98e3c53113c161b32d/thirdparty/lama/LaMa_test_images
+outdir: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/52ccf55316641164c5560b2a3c5a795712c827725a9e4f98e3c53113c161b32d/thirdparty/lama/output
+model:
+  path: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/52ccf55316641164c5560b2a3c5a795712c827725a9e4f98e3c53113c161b32d/thirdparty/lama/big-lama
+  checkpoint: best.ckpt
+dataset:
+  kind: default
+  img_suffix: .png
+  pad_out_to_modulo: 8
+device: cuda
+out_key: inpainted
+refine: false
+refiner:
+  gpu_ids: 0,1
+  modulo: ${dataset.pad_out_to_modulo}
+  n_iters: 15
+  lr: 0.002
+  min_side: 512
+  max_scales: 3
+  px_budget: 1800000

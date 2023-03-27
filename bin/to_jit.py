@@ -7,8 +7,8 @@ import yaml
 from omegaconf import OmegaConf
 from torch import nn
 
-from saicinpainting.training.trainers import load_checkpoint
-from saicinpainting.utils import register_debug_signal_handlers
+from ..saicinpainting.training.trainers import load_checkpoint
+from ..saicinpainting.utils import register_debug_signal_handlers
 
 
 class JITWrapper(nn.Module):

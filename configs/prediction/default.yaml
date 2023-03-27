@@ -1,8 +1,8 @@
-indir: no  # to be overriden in CLI
-outdir: no  # to be overriden in CLI
+indir: /app/data/garden_landscape_output_bg
+outdir:  /app/data/garden_landscape_output_bg/rgb
 
 model:
-  path: no  # to be overriden in CLI
+  path: /app/thirdparty/lama/big-lama
   checkpoint: best.ckpt
 
 dataset:

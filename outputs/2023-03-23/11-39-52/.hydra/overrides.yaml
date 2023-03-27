@@ -1,0 +1,3 @@
+- model.path=/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/52ccf55316641164c5560b2a3c5a795712c827725a9e4f98e3c53113c161b32d/thirdparty/lama/big-lama
+- indir=/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/52ccf55316641164c5560b2a3c5a795712c827725a9e4f98e3c53113c161b32d/thirdparty/lama/LaMa_test_images
+- outdir=/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/52ccf55316641164c5560b2a3c5a795712c827725a9e4f98e3c53113c161b32d/thirdparty/lama/output
