@@ -55,6 +55,33 @@ def scale_image(img, factor, interpolation=cv2.INTER_AREA):
     return img
 
 
+class Video2MashDataset(Dataset):
+    def __init__(self, imageDir, maskDir, img_suffix='.jpg', pad_out_to_modulo=None, scale_factor=None):
+        self.datadir = maskDir
+        self.mask_filenames = sorted(list(glob.glob(os.path.join(maskDir, '**'+img_suffix), recursive=True)))
+        self.img_filenames = sorted(list(glob.glob(os.path.join(imageDir, '**'+img_suffix), recursive=True)))
+        self.pad_out_to_modulo = pad_out_to_modulo
+        self.scale_factor = scale_factor
+
+    def __len__(self):
+        return len(self.mask_filenames)
+
+    def __getitem__(self, i):
+        image = load_image(self.img_filenames[i], mode='RGB')
+        mask = load_image(self.mask_filenames[i], mode='L')
+        result = dict(image=image, mask=mask[None, ...])
+
+        if self.scale_factor is not None:
+            result['image'] = scale_image(result['image'], self.scale_factor)
+            result['mask'] = scale_image(result['mask'], self.scale_factor, interpolation=cv2.INTER_NEAREST)
+
+        if self.pad_out_to_modulo is not None and self.pad_out_to_modulo > 1:
+            result['unpad_to_size'] = result['image'].shape[1:]
+            result['image'] = pad_img_to_modulo(result['image'], self.pad_out_to_modulo)
+            result['mask'] = pad_img_to_modulo(result['mask'], self.pad_out_to_modulo)
+
+        return result
+    
 class InpaintingDataset(Dataset):
     def __init__(self, datadir, img_suffix='.jpg', pad_out_to_modulo=None, scale_factor=None):
         self.datadir = datadir+"mask/"

@@ -28,13 +28,14 @@ import yaml
 from omegaconf import OmegaConf
 from torch.utils.data._utils.collate import default_collate
 
-from ..saicinpainting.training.data.datasets import make_default_val_dataset
+from ..saicinpainting.training.data.datasets import make_default_val_dataset_with_folders, make_default_val_dataset
 from ..saicinpainting.training.trainers import load_checkpoint
 from ..saicinpainting.utils import register_debug_signal_handlers
 
 LOGGER = logging.getLogger(__name__)
 
-def predict(indir,outdir,model_path):
+
+def predict(imageDir,maskDir,outdir,model_path):
     try:
         register_debug_signal_handlers()  # kill -10 <pid> will result in traceback dumped into log
 
@@ -54,15 +55,17 @@ def predict(indir,outdir,model_path):
         model.freeze()
         model.to(device)
 
-        if not indir.endswith('/'):
-            indir += '/'
+        if not imageDir.endswith('/'):
+            imageDir += '/'
+        if not maskDir.endswith('/'):
+            maskDir += '/'
 
-        dataset = make_default_val_dataset(indir, **{'kind': 'default', 'img_suffix': '.png', 'pad_out_to_modulo': 8})
+        dataset = make_default_val_dataset_with_folders(imageDir, maskDir, **{'kind': 'default', 'img_suffix': '.png', 'pad_out_to_modulo': 8})
         for img_i in tqdm.trange(len(dataset)):
             mask_fname = dataset.mask_filenames[img_i]
             cur_out_fname = os.path.join(
                 outdir, 
-                os.path.splitext(mask_fname[len(indir):])[0] + '.png'
+                os.path.splitext(mask_fname[len(maskDir):])[0] + '.png'
             ).replace("mask/", '')
             os.makedirs(os.path.dirname(cur_out_fname), exist_ok=True)
             batch = default_collate([dataset[img_i]])
