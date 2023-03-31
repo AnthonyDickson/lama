@@ -35,7 +35,7 @@ from ..saicinpainting.utils import register_debug_signal_handlers
 LOGGER = logging.getLogger(__name__)
 
 
-def predict(imageDir,maskDir,outdir,model_path):
+def predict(imageDir,maskDir,outdir,model_path,depth=False):
     try:
         register_debug_signal_handlers()  # kill -10 <pid> will result in traceback dumped into log
 
@@ -78,8 +78,10 @@ def predict(imageDir,maskDir,outdir,model_path):
                 if unpad_to_size is not None:
                     orig_height, orig_width = unpad_to_size
                     cur_res = cur_res[:orig_height, :orig_width]
-
-            cur_res = np.clip(cur_res * 255, 0, 255).astype('uint8')
+            if depth: 
+                cur_res = np.clip(cur_res * 65535, 0, 65535).astype('uint16')
+            else:
+                cur_res = np.clip(cur_res * 255, 0, 255).astype('uint8')
             cur_res = cv2.cvtColor(cur_res, cv2.COLOR_RGB2BGR)
             cv2.imwrite(cur_out_fname, cur_res)
 
