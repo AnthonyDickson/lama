@@ -37,7 +37,7 @@ LOGGER = logging.getLogger(__name__)
 
 def predict(imageDir,maskDir,outdir,model_path,depth=False):
     try:
-        register_debug_signal_handlers()  # kill -10 <pid> will result in traceback dumped into log
+        # register_debug_signal_handlers()  # kill -10 <pid> will result in traceback dumped into log
 
         device = torch.device('cuda')
 
