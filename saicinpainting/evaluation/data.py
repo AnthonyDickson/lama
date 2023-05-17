@@ -10,10 +10,14 @@ import torch.nn.functional as F
 
 
 def load_image(fname, mode='RGB', return_orig=False):
-    img = np.array(Image.open(fname).convert(mode))
+    # Need to read image with OpenCV to avoid depth maps from being downcast to 8-bit from 16-bit and thus losing precision.
+    img = cv2.imread(fname, cv2.IMREAD_UNCHANGED)
+
     if img.ndim == 3:
         img = np.transpose(img, (2, 0, 1))
-    out_img = img.astype('float32') / 255
+
+    out_img = img.astype('float32') / np.iinfo(img.dtype).max
+
     if return_orig:
         return out_img, img
     else:
@@ -55,7 +59,7 @@ def scale_image(img, factor, interpolation=cv2.INTER_AREA):
     return img
 
 
-class Video2MashDataset(Dataset):
+class Video2MeshDataset(Dataset):
     def __init__(self, imageDir, maskDir, img_suffix='.jpg', pad_out_to_modulo=None, scale_factor=None):
         self.datadir = maskDir
         self.mask_filenames = sorted(list(glob.glob(os.path.join(maskDir, '**'+img_suffix), recursive=True)))

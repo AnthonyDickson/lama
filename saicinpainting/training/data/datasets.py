@@ -15,7 +15,7 @@ from skimage.transform import rescale, resize
 from torch.utils.data import Dataset, IterableDataset, DataLoader, DistributedSampler, ConcatDataset
 
 from ....saicinpainting.evaluation.data import InpaintingDataset as InpaintingEvaluationDataset, \
-    OurInpaintingDataset as OurInpaintingEvaluationDataset, ceil_modulo, InpaintingEvalOnlineDataset, Video2MashDataset
+    OurInpaintingDataset as OurInpaintingEvaluationDataset, ceil_modulo, InpaintingEvalOnlineDataset, Video2MeshDataset
 from ....saicinpainting.training.data.aug import IAAAffine2, IAAPerspective2
 from ....saicinpainting.training.data.masks import get_mask_generator
 
@@ -250,7 +250,7 @@ def make_default_val_dataset_with_folders(imageDir, maskDir, kind='default', out
     LOGGER.info(f'Make val dataloader {kind} from {imageDir} and {maskDir}')
     mask_generator = get_mask_generator(kind=kwargs.get("mask_generator_kind"), kwargs=kwargs.get("mask_gen_kwargs"))
 
-    dataset = Video2MashDataset(imageDir, maskDir, **kwargs)
+    dataset = Video2MeshDataset(imageDir, maskDir, **kwargs)
 
     return dataset
 
