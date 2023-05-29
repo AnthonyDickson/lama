@@ -62,8 +62,8 @@ def predict(imageDir, maskDir, outdir, model_path, depth=False):
         if not maskDir.endswith('/'):
             maskDir += '/'
 
-        dataset = make_default_val_dataset_with_folders(imageDir, maskDir, **{'kind': 'default', 'img_suffix': '.png',
-                                                                              'pad_out_to_modulo': 8})
+        dataset = make_default_val_dataset_with_folders(imageDir, maskDir, **{'kind': 'default', 'pad_out_to_modulo': 8})
+
         for img_i in tqdm.trange(len(dataset)):
             mask_fname = dataset.mask_filenames[img_i]
             cur_out_fname = os.path.join(

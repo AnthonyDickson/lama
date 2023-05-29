@@ -60,10 +60,10 @@ def scale_image(img, factor, interpolation=cv2.INTER_AREA):
 
 
 class Video2MeshDataset(Dataset):
-    def __init__(self, imageDir, maskDir, img_suffix='.jpg', pad_out_to_modulo=None, scale_factor=None):
+    def __init__(self, imageDir, maskDir, pad_out_to_modulo=None, scale_factor=None, **_):
         self.datadir = maskDir
-        self.mask_filenames = sorted(list(glob.glob(os.path.join(maskDir, '**'+img_suffix), recursive=True)))
-        self.img_filenames = sorted(list(glob.glob(os.path.join(imageDir, '**'+img_suffix), recursive=True)))
+        self.img_filenames = [os.path.join(imageDir, filename) for filename in sorted(os.listdir(imageDir))]
+        self.mask_filenames = [os.path.join(maskDir, filename) for filename in sorted(os.listdir(maskDir))]
         self.pad_out_to_modulo = pad_out_to_modulo
         self.scale_factor = scale_factor
 

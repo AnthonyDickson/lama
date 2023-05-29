@@ -248,7 +248,6 @@ def make_default_train_dataloader(indir, kind='default', out_size=512, mask_gen_
 def make_default_val_dataset_with_folders(imageDir, maskDir, kind='default', out_size=512, transform_variant='default', **kwargs):
 
     LOGGER.info(f'Make val dataloader {kind} from {imageDir} and {maskDir}')
-    mask_generator = get_mask_generator(kind=kwargs.get("mask_generator_kind"), kwargs=kwargs.get("mask_gen_kwargs"))
 
     dataset = Video2MeshDataset(imageDir, maskDir, **kwargs)
 
